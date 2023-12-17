@@ -6,7 +6,6 @@ import com.vatsuvaksi.requests.protocols.http.nonsecure.requestbody.HttpRequestB
 import com.vatsuvaksi.utils.json.JsonFactory;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -33,6 +32,7 @@ public class GetRequest<T extends CliRequest , K> implements HttpClient<T , K> {
             //** if(httpRequest.getQueryParams() != null){} **//
 
             // TODO :  Remove this and don't allow GET to have a request body
+            // TODO : Need to fetch according to instance
             HttpRequestBody httpRequestBody = httpRequest.getHttpRequestBody();
             if(httpRequestBody.getContent() != null){
                 con.setDoOutput(true);
