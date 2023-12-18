@@ -20,10 +20,12 @@ public class GetRequest<T extends CliRequest , K> implements HttpClient<T , K> {
         HttpURLConnection con = null;
         try {
             URL url = httpRequest.getUrl().toURL();
+            con = (HttpURLConnection) url.openConnection();
+
 
             con.setRequestMethod(GET);
 
-            if(!httpRequest.getHeaders().isEmpty()){
+            if((httpRequest.getHeaders() != null)){
                 for(Map.Entry<String, String> entry : httpRequest.getHeaders().entrySet()){
                     con.addRequestProperty(entry.getKey() , entry.getValue());
                 }
@@ -34,7 +36,8 @@ public class GetRequest<T extends CliRequest , K> implements HttpClient<T , K> {
             // TODO :  Remove this and don't allow GET to have a request body
             // TODO : Need to fetch according to instance
             HttpRequestBody httpRequestBody = httpRequest.getHttpRequestBody();
-            if(httpRequestBody.getContent() != null){
+
+            if(httpRequestBody != null && httpRequestBody.getContent() != null){
                 con.setDoOutput(true);
                 try (OutputStream os = con.getOutputStream()) {
                     String requestBodyContent = JsonFactory
@@ -45,7 +48,7 @@ public class GetRequest<T extends CliRequest , K> implements HttpClient<T , K> {
                 }
             }
             con.setConnectTimeout(10000);
-            con = (HttpURLConnection) url.openConnection();
+
 
             int responseCode = con.getResponseCode();
             if(responseCode == 200){
@@ -63,7 +66,10 @@ public class GetRequest<T extends CliRequest , K> implements HttpClient<T , K> {
         }  catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            con.disconnect();
+            if(con != null){
+                con.disconnect();
+            }
+
         }
     }
 }
