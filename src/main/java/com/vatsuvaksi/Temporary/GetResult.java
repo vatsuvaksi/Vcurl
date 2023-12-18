@@ -6,7 +6,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 @ToString
-public class Result implements Serializable {
+public class GetResult implements Serializable {
     public Args args;
     public Headers headers;
     public String origin;
