@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class App {
+
+    // TODO : ALL THESE NEEDS TO BE REMOVED AND MOVED TO TEST
     public static void main(String[] args) throws MalformedURLException, URISyntaxException {
         // GET Request
         CliRequest getCliRequest = HttpRequest
