@@ -17,11 +17,11 @@ public class DeleteRequest<K> extends HttpClient<K> {
             URL url = httpRequest.getUrl().toURL();
             con = openConnection(url);
 
-            setRequestMethod(con, DELETE);
+            super.setRequestMethod(con, DELETE);
 
-            setRequestHeaders(con, httpRequest);
+            super.setRequestHeaders(con, httpRequest);
 
-            setConnectTimeout(con);
+            super.setConnectTimeout(con);
 
             int responseCode = con.getResponseCode();
             if (responseCode == 200) {

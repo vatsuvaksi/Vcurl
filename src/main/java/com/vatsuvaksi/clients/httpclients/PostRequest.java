@@ -17,13 +17,13 @@ public class PostRequest<K> extends HttpClient<K> {
             URL url = httpRequest.getUrl().toURL();
             con = openConnection(url);
 
-            setRequestMethod(con , POST);
+            super.setRequestMethod(con , POST);
 
-            setRequestHeaders(con, httpRequest);
+            super.setRequestHeaders(con, httpRequest);
 
-            writeRequestBody(con, httpRequest);
+            super.writeRequestBody(con, httpRequest);
 
-            setConnectTimeout(con);
+            super.setConnectTimeout(con);
 
             int responseCode = con.getResponseCode();
             if (responseCode == 200) {
