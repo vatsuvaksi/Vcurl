@@ -8,10 +8,10 @@ import com.vatsuvaksi.clients.httpclients.GetRequest;
 import com.vatsuvaksi.clients.httpclients.PostRequest;
 import com.vatsuvaksi.clients.httpclients.PutRequest;
 
-import com.vatsuvaksi.requests.CliRequest;
+
 import com.vatsuvaksi.requests.protocols.http.nonsecure.HttpRequest;
 
-import java.net.MalformedURLException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -19,42 +19,48 @@ public class App {
 
     // TODO : ALL THESE NEEDS TO BE REMOVED AND MOVED TO TEST
     public static void main(String[] args) throws URISyntaxException {
+
+        InitializeApplication.start();
+
+        String url = "http://localhost/";
         // GET Request
         HttpRequest getCliRequest = HttpRequest
                 .builder()
                 .httpMethod("GET")
                 .build();
-        getCliRequest.setUrl(new URI("http://localhost/get"));
+        getCliRequest.setUrl(new URI( url + "get"));
         Protocol<HttpRequest, GetResult> getProtocol = new GetRequest<>();
-        System.out.println(getProtocol.executeRequest(getCliRequest, GetResult.class).toString());
+        getProtocol.executeRequest(getCliRequest , GetResult.class);
+
 
         // POST Request
         HttpRequest postHttpRequest = HttpRequest
                 .builder()
                 .httpMethod("POST")
                 .build();
-        postHttpRequest.setUrl(new URI("http://localhost/post"));
+        postHttpRequest.setUrl(new URI(url + "post"));
         Protocol<HttpRequest, PostResult> postProtocol = new PostRequest<>();
-        System.out.println(postProtocol.executeRequest((HttpRequest) postHttpRequest, PostResult.class).toString());
+        postProtocol.executeRequest(postHttpRequest , PostResult.class);
+
 
         // PUT Request
         HttpRequest putCliRequest = HttpRequest
                 .builder()
                 .httpMethod("PUT")
                 .build();
-        putCliRequest.setUrl(new URI("http://localhost/put"));
+        putCliRequest.setUrl(new URI(url + "put"));
         Protocol<HttpRequest, PostResult> putProtocol = new PutRequest<>();
-        System.out.println(putProtocol.executeRequest(putCliRequest, PostResult.class).toString());
+        putProtocol.executeRequest(putCliRequest , PostResult.class);
+
 
         // DELETE Request
         HttpRequest deleteCliRequest = HttpRequest
                 .builder()
                 .httpMethod("DELETE")
                 .build();
-        deleteCliRequest.setUrl(new URI("http://localhost/delete"));
+        deleteCliRequest.setUrl(new URI(url + "delete"));
         Protocol<HttpRequest, PostResult> deleteProtocol = new DeleteRequest<>();
-        System.out.println(deleteProtocol.executeRequest(deleteCliRequest, PostResult.class).toString());
+        deleteProtocol.executeRequest(deleteCliRequest , PostResult.class);
 
-        System.out.println("Hello World!");
     }
 }

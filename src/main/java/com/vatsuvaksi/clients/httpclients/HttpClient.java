@@ -1,7 +1,6 @@
 package com.vatsuvaksi.clients.httpclients;
 
 import com.vatsuvaksi.clients.Protocol;
-import com.vatsuvaksi.requests.CliRequest;
 import com.vatsuvaksi.requests.protocols.http.nonsecure.HttpRequest;
 import com.vatsuvaksi.requests.protocols.http.nonsecure.requestbody.HttpRequestBody;
 import com.vatsuvaksi.utils.json.JsonFactory;
@@ -14,9 +13,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
 
+    private static final Logger logger = Logger.getLogger(HttpClient.class.getName());
 
     protected final HttpURLConnection openConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
@@ -39,7 +40,9 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
                 setDoOutput(con);
                 writeRequestBodyContent(con, httpRequestBody);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                String msg = "Error in Writing Request Body for " +
+                        "-" + con.getURL().getHost() + "/" + con.getURL().getPath();
+                logger.warning(msg);
             }
         }
     }
