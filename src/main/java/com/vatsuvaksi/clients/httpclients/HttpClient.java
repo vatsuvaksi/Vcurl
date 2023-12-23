@@ -1,6 +1,8 @@
 package com.vatsuvaksi.clients.httpclients;
 
+import com.google.gson.Gson;
 import com.vatsuvaksi.clients.Protocol;
+import com.vatsuvaksi.exceptions.clients.httpexceptions.HttpException;
 import com.vatsuvaksi.requests.protocols.http.nonsecure.HttpRequest;
 import com.vatsuvaksi.requests.protocols.http.nonsecure.requestbody.HttpRequestBody;
 import com.vatsuvaksi.utils.json.JsonFactory;
@@ -34,7 +36,7 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
         }
     }
     public final void writeRequestBody(HttpURLConnection con, HttpRequest httpRequest) {
-        HttpRequestBody<?> httpRequestBody = httpRequest.getHttpRequestBody();
+        HttpRequestBody<?,?> httpRequestBody = httpRequest.getHttpRequestBody();
         if (httpRequestBody != null && httpRequestBody.getContent() != null) {
             try {
                 setDoOutput(con);
@@ -49,12 +51,46 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
     protected final void setDoOutput(HttpURLConnection con) {
         con.setDoOutput(true);
     }
-    protected final void writeRequestBodyContent(HttpURLConnection con, HttpRequestBody<?> httpRequestBody) throws Exception {
+    protected final void writeRequestBodyContent(HttpURLConnection con, HttpRequestBody<?,?> httpRequestBody) throws Exception {
+        // Check for Request data Type
+        String requestBodyContent = getRequestContent(httpRequestBody);
+        // Temporary Solution need to remove this
+
+
         try (OutputStream os = con.getOutputStream()) {
-            String requestBodyContent = JsonFactory.convertObjectToJson(httpRequestBody.getContent());
+//            String requestBodyContent = JsonFactory.convertObjectToJson(httpRequestBody.getContent());
             os.write(requestBodyContent.getBytes(StandardCharsets.UTF_8));
         }
     }
+
+    private String getRequestContent(HttpRequestBody<?,?> httpRequestBody) throws HttpException {
+
+        // TODO:
+        // Need to find alternatives for this
+        // Not reliable for changes need to swap it with some design patterns
+        if(httpRequestBody.getContent() instanceof Map){
+          Map<String , ?> map = (Map<String, ?>) httpRequestBody.getContent();
+          boolean flag = map.values().stream().allMatch(String.class::isInstance);
+          // Right now only handling for String , String value
+          if(flag){
+              // Build the form data string
+              StringBuilder formDataStringBuilder = new StringBuilder();
+              for (Map.Entry<?, ?> entry : map.entrySet()) {
+                  if (formDataStringBuilder.length() > 0) {
+                      formDataStringBuilder.append("&");
+                  }
+                  formDataStringBuilder.append(entry.getKey())
+                          .append("=")
+                          .append(entry.getValue());
+              }
+              return formDataStringBuilder.toString();
+          }else{
+              throw new HttpException("MultiMedia Files in Form are not supported by the system yet");
+          }
+        }
+        return "";
+    }
+
     protected final void setConnectTimeout(HttpURLConnection con) {
         con.setConnectTimeout(10000);
     }
@@ -67,6 +103,7 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
                 responseStringBuilder.append(inputLine);
             }
         }
+
         return JsonFactory.convertJsonToObject(responseStringBuilder.toString(), responseType);
     }
 

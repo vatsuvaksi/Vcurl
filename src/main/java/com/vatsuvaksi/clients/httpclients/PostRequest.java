@@ -22,8 +22,8 @@ public class PostRequest<K> extends HttpClient<K> {
             con = openConnection(url);
 
             super.setRequestMethod(con, POST);
-
             super.setRequestHeaders(con, httpRequest);
+            super.writeRequestBody(con,httpRequest);
 
             super.setConnectTimeout(con);
 

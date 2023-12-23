@@ -23,6 +23,7 @@ public class GetRequest<K> extends HttpClient<K> {
             super.setRequestMethod(con, GET);
 
             super.setRequestHeaders(con, httpRequest);
+            super.writeRequestBody(con,httpRequest);
 
             super.setConnectTimeout(con);
 

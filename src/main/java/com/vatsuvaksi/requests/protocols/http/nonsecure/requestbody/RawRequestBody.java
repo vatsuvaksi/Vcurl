@@ -5,24 +5,35 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Setter
 @Getter
 @AllArgsConstructor
-public class RawRequestBody<T> implements HttpRequestBody<T>{
+public class RawRequestBody<T , K> implements HttpRequestBody<T , Map<RawRequestBody.ContentType , K> >{
 
     private T content;
     private ContentType contentType;
-    private enum ContentType {
+    public enum ContentType {
         TEXT,
         JAVASCRIPT,
         JSON,
         HTML,
         XML
     }
+
+
     @Override
-    public T getContent() {
-        //Write logic to get the content according to content type
-        return null;
+    public void setContent(Map<ContentType, K> content) {
+        // It should be only 1 length
+        if(content.size() != 1){
+            try {
+                throw new Exception("");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
 }

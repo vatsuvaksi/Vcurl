@@ -26,6 +26,7 @@ public class DeleteRequest<K> extends HttpClient<K> {
             super.setRequestMethod(con, DELETE);
 
             super.setRequestHeaders(con, httpRequest);
+            super.writeRequestBody(con,httpRequest);
 
             super.setConnectTimeout(con);
 

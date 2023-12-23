@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class HttpRequestTest {
 
-    @Test()
+    @Test
     public void testHttpRequestBuilder() {
         // Arrange
         Map<String, String> headers = new HashMap<>();

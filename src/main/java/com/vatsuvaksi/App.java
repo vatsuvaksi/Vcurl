@@ -10,10 +10,13 @@ import com.vatsuvaksi.clients.httpclients.PutRequest;
 
 
 import com.vatsuvaksi.requests.protocols.http.nonsecure.HttpRequest;
+import com.vatsuvaksi.requests.protocols.http.nonsecure.requestbody.FormDataRequestBody;
 
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class App {
 
@@ -32,15 +35,30 @@ public class App {
         Protocol<HttpRequest, GetResult> getProtocol = new GetRequest<>();
         getProtocol.executeRequest(getCliRequest , GetResult.class);
 
+//        HttpRequestBody<String, Void> httpRequestBody = new NoneRequestBody();
 
+        Map<String, String> content = new HashMap<>();
+        content.put("ket1", "val");
+        content.put("ket2", "val");
+        content.put("ket3", "val");
+        content.put("ket4", "val");
+        FormDataRequestBody httpRequestBody = new FormDataRequestBody();
+        httpRequestBody.setContent(content);
         // POST Request
+        Map<String , String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-www-form-urlencoded");
+
         HttpRequest postHttpRequest = HttpRequest
                 .builder()
                 .httpMethod("POST")
+                .httpRequestBody(httpRequestBody)
+                .headers(headers)
                 .build();
         postHttpRequest.setUrl(new URI(url + "post"));
-        Protocol<HttpRequest, PostResult> postProtocol = new PostRequest<>();
-        postProtocol.executeRequest(postHttpRequest , PostResult.class);
+        Protocol<HttpRequest, String> postProtocol = new PostRequest<>();
+        String postResult = postProtocol.executeRequest(postHttpRequest , String.class);
+
+        System.out.println(postResult);
 
 
         // PUT Request

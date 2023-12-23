@@ -23,6 +23,7 @@ public class PutRequest<K> extends HttpClient<K> {
             super.setRequestMethod(con, PUT);
 
             super.setRequestHeaders(con, httpRequest);
+            super.writeRequestBody(con,httpRequest);
 
             super.setConnectTimeout(con);
 

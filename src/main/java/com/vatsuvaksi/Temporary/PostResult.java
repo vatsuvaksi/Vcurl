@@ -20,6 +20,7 @@ public class PostResult {
     }
 
     public class Form{
+
     }
 
     @ToString
