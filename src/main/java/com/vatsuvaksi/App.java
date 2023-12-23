@@ -18,15 +18,15 @@ import java.net.URISyntaxException;
 public class App {
 
     // TODO : ALL THESE NEEDS TO BE REMOVED AND MOVED TO TEST
-    public static void main(String[] args) throws MalformedURLException, URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException {
         // GET Request
-        CliRequest getCliRequest = HttpRequest
+        HttpRequest getCliRequest = HttpRequest
                 .builder()
                 .httpMethod("GET")
                 .build();
         getCliRequest.setUrl(new URI("http://localhost/get"));
         Protocol<HttpRequest, GetResult> getProtocol = new GetRequest<>();
-        System.out.println(getProtocol.executeRequest((HttpRequest) getCliRequest, GetResult.class).toString());
+        System.out.println(getProtocol.executeRequest(getCliRequest, GetResult.class).toString());
 
         // POST Request
         HttpRequest postHttpRequest = HttpRequest
@@ -38,22 +38,22 @@ public class App {
         System.out.println(postProtocol.executeRequest((HttpRequest) postHttpRequest, PostResult.class).toString());
 
         // PUT Request
-        CliRequest putCliRequest = HttpRequest
+        HttpRequest putCliRequest = HttpRequest
                 .builder()
                 .httpMethod("PUT")
                 .build();
         putCliRequest.setUrl(new URI("http://localhost/put"));
         Protocol<HttpRequest, PostResult> putProtocol = new PutRequest<>();
-        System.out.println(putProtocol.executeRequest((HttpRequest) putCliRequest, PostResult.class).toString());
+        System.out.println(putProtocol.executeRequest(putCliRequest, PostResult.class).toString());
 
         // DELETE Request
-        CliRequest deleteCliRequest = HttpRequest
+        HttpRequest deleteCliRequest = HttpRequest
                 .builder()
                 .httpMethod("DELETE")
                 .build();
         deleteCliRequest.setUrl(new URI("http://localhost/delete"));
         Protocol<HttpRequest, PostResult> deleteProtocol = new DeleteRequest<>();
-        System.out.println(deleteProtocol.executeRequest((HttpRequest) deleteCliRequest, PostResult.class).toString());
+        System.out.println(deleteProtocol.executeRequest(deleteCliRequest, PostResult.class).toString());
 
         System.out.println("Hello World!");
     }
