@@ -1,6 +1,6 @@
 package com.vatsuvaksi.clients.httpclients;
 
-import com.google.gson.Gson;
+
 import com.vatsuvaksi.clients.Protocol;
 import com.vatsuvaksi.exceptions.clients.httpexceptions.HttpException;
 import com.vatsuvaksi.requests.protocols.http.nonsecure.HttpRequest;
@@ -58,7 +58,6 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
 
 
         try (OutputStream os = con.getOutputStream()) {
-//            String requestBodyContent = JsonFactory.convertObjectToJson(httpRequestBody.getContent());
             os.write(requestBodyContent.getBytes(StandardCharsets.UTF_8));
         }
     }
@@ -104,7 +103,7 @@ public abstract class HttpClient<K> implements Protocol<HttpRequest , K> {
             }
         }
 
-        return JsonFactory.convertJsonToObject(responseStringBuilder.toString(), responseType);
+        return JsonFactory.convertJsonStringToObject(responseStringBuilder.toString(), responseType);
     }
 
     protected final void disconnectSafely(HttpURLConnection con) {
