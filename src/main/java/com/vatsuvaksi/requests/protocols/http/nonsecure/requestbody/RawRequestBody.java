@@ -1,7 +1,6 @@
 package com.vatsuvaksi.requests.protocols.http.nonsecure.requestbody;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,8 +42,7 @@ public class RawRequestBody<K> implements HttpRequestBody<K, Map<RawRequestBody.
         K value = entry.getValue();
 
         switch (contentType1) {
-            case XML -> handleDocument(value);
-            case HTML -> handleDocument(value);
+            case XML, HTML -> handleDocument(value);
             case JSON -> handleJson(value);
             case JAVASCRIPT -> handleJavaScript(value);
             case TEXT -> handleText(value);
@@ -88,7 +86,7 @@ public class RawRequestBody<K> implements HttpRequestBody<K, Map<RawRequestBody.
         Objects.requireNonNull(value, "JSON content cannot be null");
         try {// Parse JSON using Jackson
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree((JsonParser) value);
+            objectMapper.readTree((JsonParser) value);
         } catch (Exception e) {
             throw new RuntimeException("The Value passed is not of Json Type", e);
         }
