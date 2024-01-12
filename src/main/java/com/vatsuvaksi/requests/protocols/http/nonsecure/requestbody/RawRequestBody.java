@@ -56,6 +56,9 @@ public class RawRequestBody<K> implements HttpRequestBody<K, Map<RawRequestBody.
     // I am pretty sure these functions are not needed, remove this once confirmed.
     // The body anyway is going to come as string, we can pass that directly or shoud we parse it
     // into a map ??
+
+    //TODO : SOLUTION : You need to extrct the values into MAP, from all the fields extrct key vlue pair
+    // and prepare a corresponding map.
     private void handleText(K value) {
         Objects.requireNonNull(value, "Text content cannot be null");
         if (!(value instanceof String)) {
